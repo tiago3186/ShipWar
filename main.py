@@ -46,6 +46,10 @@ enemies = []
 # Intervalo mínimo entre o aparecimento das naves inimigas em milissegundos
 enemy_spawn_interval = 500  # 0,5 segundo
 
+# Função para verificar colisão entre retângulos
+def check_collision(rect1, rect2):
+    return rect1.colliderect(rect2)
+
 # Loop principal do jogo
 while True:
     # Lidar com eventos
@@ -116,6 +120,16 @@ while True:
 
     # Desenhar a imagem da nave na tela
     screen.blit(image, (image_x, image_y))
+
+    # Verificar colisão entre mísseis e naves inimigas e excluir ambas em caso de colisão
+    for missile_x, missile_y in missiles:
+        missile_rect = pygame.Rect(missile_x, missile_y, missile_image.get_width(), missile_image.get_height())
+        for enemy_x, enemy_y, _ in enemies:
+            enemy_rect = pygame.Rect(enemy_x, enemy_y, enemy_image.get_width(), enemy_image.get_height())
+            if check_collision(missile_rect, enemy_rect):
+                missiles.remove((missile_x, missile_y))
+                enemies.remove((enemy_x, enemy_y, _))
+                break
 
     # Atualizar a tela
     pygame.display.flip()
