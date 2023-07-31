@@ -1,8 +1,8 @@
 ## ShipWar
-meu jogo de naves com pygame
+jogo de naves estilo asteroid, em desenvolvimento
 
-### o que é
-Jogo de naves em desenvolvimento com pygame  
+### sobre
+inclui pygame  
 
 ![readme1](https://github.com/tiago3186/ShipWar/assets/132753395/aed84225-645d-493e-824a-f4702a155118)
 
