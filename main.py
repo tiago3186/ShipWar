@@ -10,8 +10,10 @@ SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Ship War")
 
+# Carregar a imagem de fundo do universo (que já possui o tamanho correto)
+background_image = pygame.image.load("universo.jpg")
 # Carregar a imagem da nave
-image = pygame.image.load("nave1.jpg")
+image = pygame.image.load("nave1.png")
 # Redimensionar a imagem para o tamanho desejado
 image = pygame.transform.scale(image, (50, 50))
 
@@ -21,7 +23,7 @@ missile_image = pygame.image.load("tiro1.jpg")
 missile_image = pygame.transform.scale(missile_image, (missile_image.get_width() // 2, missile_image.get_height() // 2))
 
 # Carregar a imagem da nave inimiga
-enemy_image = pygame.image.load("nave2.jpg")
+enemy_image = pygame.image.load("ship2.png")
 # Redimensionar a imagem da nave inimiga para o tamanho desejado
 enemy_image = pygame.transform.scale(enemy_image, (50, 50))
 
@@ -122,8 +124,8 @@ while True:
                 score += 100
                 break
 
-    # Preencher a tela de preto
-    screen.fill((0, 0, 0))
+    # Preencher a tela com a imagem de fundo do universo
+    screen.blit(background_image, (0, 0))
 
     # Desenhar o SCORE na tela (canto superior direito)
     font = pygame.font.SysFont(None, 30)
