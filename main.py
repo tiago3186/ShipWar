@@ -29,7 +29,7 @@ enemy_image = pygame.transform.scale(enemy_image, (50, 50))
 image_x, image_y = SCREEN_WIDTH // 2, 4 * SCREEN_HEIGHT // 5
 
 # Velocidade de movimento da imagem
-speed = 0.5
+speed = 1
 
 # Lista para armazenar os mísseis
 missiles = []
@@ -44,7 +44,10 @@ shot_interval = 100
 enemies = []
 
 # Intervalo mínimo entre o aparecimento das naves inimigas em milissegundos
-enemy_spawn_interval = 500  # 0,5 segundo
+enemy_spawn_interval = 200  # 0,5 segundo
+
+# Variável para armazenar o SCORE
+score = 0
 
 # Função para verificar colisão entre retângulos
 def check_collision(rect1, rect2):
@@ -80,7 +83,7 @@ while True:
     # Movimento de todos os mísseis
     for missile_idx in range(len(missiles)):
         missile_x, missile_y = missiles[missile_idx]
-        missile_y -= 1.0
+        missile_y -= 2.0
         missiles[missile_idx] = (missile_x, missile_y)
 
     # Filtrar mísseis que saíram da tela
@@ -90,12 +93,12 @@ while True:
     if pygame.time.get_ticks() % (2 * enemy_spawn_interval) == 0:
         enemy_x = 0
         enemy_y = random.randint(SCREEN_HEIGHT // 6, SCREEN_HEIGHT // 1.5 - enemy_image.get_height())  # Posição aleatória entre 1/4 e 1/2 da tela
-        enemy_speed = random.uniform(0.1, 0.2)  # Velocidade aleatória para a nave inimiga
+        enemy_speed = random.uniform(1.5, 2)  # Velocidade aleatória para a nave inimiga
         enemies.append((enemy_x, enemy_y, enemy_speed))
     elif pygame.time.get_ticks() % (2 * enemy_spawn_interval) == enemy_spawn_interval:
         enemy_x = SCREEN_WIDTH - enemy_image.get_width()
         enemy_y = random.randint(SCREEN_HEIGHT // 6, SCREEN_HEIGHT // 1.5 - enemy_image.get_height())  # Posição aleatória entre 1/4 e 1/2 da tela
-        enemy_speed = -random.uniform(0.1, 0.2)  # Velocidade aleatória (negativa) para a nave inimiga da direita
+        enemy_speed = -random.uniform(1.5, 2)  # Velocidade aleatória (negativa) para a nave inimiga da direita
         enemies.append((enemy_x, enemy_y, enemy_speed))
 
     # Movimento das naves inimigas
@@ -107,8 +110,25 @@ while True:
     # Filtrar naves inimigas que saíram da tela
     enemies = [(x, y, speed) for x, y, speed in enemies if 0 <= x <= SCREEN_WIDTH]
 
+    # Verificar colisão entre mísseis e naves inimigas e excluir ambas em caso de colisão
+    for missile_x, missile_y in missiles:
+        missile_rect = pygame.Rect(missile_x, missile_y, missile_image.get_width(), missile_image.get_height())
+        for enemy_x, enemy_y, _ in enemies:
+            enemy_rect = pygame.Rect(enemy_x, enemy_y, enemy_image.get_width(), enemy_image.get_height())
+            if check_collision(missile_rect, enemy_rect):
+                missiles.remove((missile_x, missile_y))
+                enemies.remove((enemy_x, enemy_y, _))
+                # Incrementar o SCORE quando uma nave2 é destruída
+                score += 100
+                break
+
     # Preencher a tela de preto
     screen.fill((0, 0, 0))
+
+    # Desenhar o SCORE na tela (canto superior direito)
+    font = pygame.font.SysFont(None, 30)
+    score_text = font.render("SCORE: " + str(score), True, (255, 255, 255))
+    screen.blit(score_text, (SCREEN_WIDTH - score_text.get_width() - 10, 10))
 
     # Desenhar todos os mísseis na tela
     for missile_x, missile_y in missiles:
@@ -121,15 +141,5 @@ while True:
     # Desenhar a imagem da nave na tela
     screen.blit(image, (image_x, image_y))
 
-    # Verificar colisão entre mísseis e naves inimigas e excluir ambas em caso de colisão
-    for missile_x, missile_y in missiles:
-        missile_rect = pygame.Rect(missile_x, missile_y, missile_image.get_width(), missile_image.get_height())
-        for enemy_x, enemy_y, _ in enemies:
-            enemy_rect = pygame.Rect(enemy_x, enemy_y, enemy_image.get_width(), enemy_image.get_height())
-            if check_collision(missile_rect, enemy_rect):
-                missiles.remove((missile_x, missile_y))
-                enemies.remove((enemy_x, enemy_y, _))
-                break
-
-    # Atualizar a tela
+    # Atualizar a tela 
     pygame.display.flip()
