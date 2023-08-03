@@ -8,7 +8,7 @@ class Ship(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-        self.missile_image = missile_image
+        self.missile_image = missile_image        
 
     def move(self, keys):
         speed = 1
@@ -22,28 +22,36 @@ class Ship(pygame.sprite.Sprite):
             self.rect.y += speed
 
     def fire(self):
-        missile = Missile(self.missile_image, self.rect.x, self.rect.y)
+        missile = Missile(self.missile_image, self.rect.x + self.rect.width // 2, self.rect.y, "up")
         return missile
 
 class Missile(pygame.sprite.Sprite):
-    def __init__(self, image, x, y):
+    def __init__(self, image, x, y, direction):
         super().__init__()
         self.image = pygame.transform.scale(image, (image.get_width() // 2, image.get_height() // 2))
         self.rect = self.image.get_rect()
         self.rect.x = x + self.image.get_width() / 2 - self.image.get_width() / 2
         self.rect.y = y
-
+        self.direction = direction  # Armazena a direção do míssil
+        
     def move(self):
-        self.rect.y -= 2.0
+        if self.direction == "up":
+            self.rect.y -= 2.0
+        elif self.direction == "down":
+            self.rect.y += 2.0
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, image, x, y, speed):
+    def __init__(self, image, missile_image, x, y, speed):
         super().__init__()
         self.image = pygame.transform.scale(image, (50, 50))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
         self.speed = speed
-
+        self.missile_image = missile_image
+    def fire(self, direction):  # Adicionamos o parâmetro 'direction' aqui
+        missile = Missile(self.missile_image, self.rect.x + self.rect.width // 2, self.rect.y + self.rect.height, direction)
+        return missile
+    
     def move(self):
         self.rect.x += self.speed

@@ -26,6 +26,9 @@ missiles = pygame.sprite.Group()
 # Lista para armazenar as naves inimigas
 enemies = pygame.sprite.Group()
 
+# Lista para armazenar os mísseis das naves inimigas
+enemy_missiles = pygame.sprite.Group()
+
 # Tempo do último disparo
 last_shot_time = 0
 shot_interval = 100
@@ -59,7 +62,8 @@ while True:
         missile.move()
 
     # Adicionar naves inimigas em intervalos de tempo
-    gf.spawn_enemies(enemies, enemy_image, SCREEN_WIDTH, SCREEN_HEIGHT)   
+    gf.spawn_enemies(enemies, enemy_image, missile_image, SCREEN_WIDTH, SCREEN_HEIGHT)   
+    print(enemies, enemy_image, missile_image, SCREEN_WIDTH, SCREEN_HEIGHT) 
 
     # Movimento das naves inimigas
     for enemy in enemies:
@@ -76,12 +80,21 @@ while True:
 
     # Desenhar todos os mísseis na tela
     missiles.draw(screen)
+    enemy_missiles.draw(screen)
 
     # Desenhar todas as naves inimigas na tela
-    enemies.draw(screen)
+    enemies.draw(screen)    
 
     # Desenhar a nave na tela
     screen.blit(ship.image, ship.rect)
+
+    # Atualizar o movimento dos mísseis inimigos
+    gf.enemy_fire(enemies, enemy_missiles)
+
+    # Atualizar o movimento dos mísseis inimigos
+    for missile in enemy_missiles:
+        missile.move()
+
 
     # Atualizar a tela
     pygame.display.flip()
