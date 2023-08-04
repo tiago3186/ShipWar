@@ -4,7 +4,7 @@ jogo de naves estilo asteroid, em desenvolvimento
 ### sobre
 - usa pygame  
 
-![readme1](https://github.com/tiago3186/ShipWar/assets/132753395/aed84225-645d-493e-824a-f4702a155118)
+![image](https://github.com/tiago3186/ShipWar/assets/132753395/e36f9176-320b-4254-afcd-b585a1a8201f)
 
 ### como jogar
 aperte as setas do teclado e espaço para atirar nas naves inimigas
