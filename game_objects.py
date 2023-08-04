@@ -41,7 +41,7 @@ class Missile(pygame.sprite.Sprite):
             self.rect.y += 2.0
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, image, missile_image, x, y, speed):
+    def __init__(self, image, missile_image, x, y, speed, shot_interval):
         super().__init__()
         self.image = pygame.transform.scale(image, (50, 50))
         self.rect = self.image.get_rect()
@@ -49,6 +49,8 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.y = y
         self.speed = speed
         self.missile_image = missile_image
+        self.shot_interval = shot_interval  # Intervalo de tiro específico para cada inimigo
+        self.last_shot_time = 0  # Tempo do último tiro do inimigo
     def fire(self, direction):  # Adicionamos o parâmetro 'direction' aqui
         missile = Missile(self.missile_image, self.rect.x + self.rect.width // 2, self.rect.y + self.rect.height, direction)
         return missile

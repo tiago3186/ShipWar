@@ -3,7 +3,7 @@ import pygame
 import random
 from game_objects import Enemy
 
-MAX_ENEMIES = 20 # Define o maximo de objetos enemies que pode existir na tela
+MAX_ENEMIES = 10 # Define o maximo de objetos enemies que pode existir na tela
 
 enemy_spawn_interval = 200  # Intervalo de tempo entre cada spawn de inimigo (em milissegundos)
 last_enemy_spawn_time = 0    # Tempo do último spawn de inimigo
@@ -43,10 +43,14 @@ def spawn_enemies(enemies, enemy_image, missile_image, screen_width, screen_heig
         else:
             enemy_x = screen_width
             enemy_speed = -random.uniform(0.5, 1)
-        enemy_y = random.randint(screen_height // 6, screen_height // 1.5)        
-        enemies.add(Enemy(enemy_image, missile_image, enemy_x, enemy_y, enemy_speed))
+        enemy_y = random.randint(screen_height // 6, screen_height // 1.5)       
+
+        # Gere um intervalo de tiro aleatório para cada inimigo
+        enemy_shot_interval = random.randint(2000, 4000)
+
+        enemies.add(Enemy(enemy_image, missile_image, enemy_x, enemy_y, enemy_speed, enemy_shot_interval))
         last_enemy_spawn_time = current_time
-        
+
     # Verifica se algum inimigo saiu da tela e remove
     for enemy in enemies.copy():  # Faz uma cópia da lista para evitar problemas de iteração e modificação
         if enemy.rect.x < 0 or enemy.rect.x > screen_width:

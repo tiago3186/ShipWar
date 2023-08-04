@@ -82,6 +82,14 @@ while True:
     for enemy in enemies:
         enemy.move()
 
+         # Atualizar o movimento dos mísseis inimigos, mas apenas se o intervalo de tiro tiver sido alcançado
+        current_time = pygame.time.get_ticks()
+        if current_time - enemy.last_shot_time >= enemy.shot_interval:
+            missile = enemy.fire("down")
+            if missile:
+                enemy_missiles.add(missile)
+                enemy.last_shot_time = current_time  # Atualiza o tempo do último tiro
+
     # Verificar colisão entre mísseis e naves inimigas e excluir ambas em caso de colisão
     score = gf.check_collisions(missiles, enemies, score)
 
