@@ -2,14 +2,14 @@
 
 *Ship War** é um jogo de ação e aventura onde você assume o controle de uma nave espacial em uma batalha épica contra hordas de naves inimigas. Seu objetivo é destruir os inimigos e acumular pontos, enquanto evita os mísseis lançados por eles. Este jogo é desenvolvido em Python usando a biblioteca Pygame.
 
-### Características
+### Características implementadas e em implementação
 
 - Controles simples de teclado para mover a nave e disparar mísseis.
 - Inimigos gerados aleatoriamente com diferentes imagens e velocidades.
 - Sistema de pontuação para cada inimigo destruído.
 - Mísseis inimigos que atacam a sua nave.
 - Múltiplas vidas para o jogador antes do game over.
-- Interface gráfica atraente com imagens e efeitos sonoros (coming soon).
+- Interface gráfica atraente com imagens e efeitos sonoros.
  
 
 ![image](https://github.com/tiago3186/ShipWar/assets/132753395/1c347d64-be6e-4b5d-b73a-9be10889432a)
