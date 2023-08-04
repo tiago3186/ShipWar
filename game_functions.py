@@ -3,7 +3,7 @@ import pygame
 import random
 from game_objects import Enemy
 
-MAX_ENEMIES = 10 # Define o maximo de objetos enemies que pode existir na tela
+MAX_ENEMIES = 7 # Define o maximo de objetos enemies que pode existir na tela
 
 enemy_spawn_interval = 200  # Intervalo de tempo entre cada spawn de inimigo (em milissegundos)
 last_enemy_spawn_time = 0    # Tempo do último spawn de inimigo
@@ -30,11 +30,10 @@ def check_player_collisions(enemy_missiles, ship, lives):
             break
     return lives
 
-def spawn_enemies(enemies, enemy_image, missile_image, screen_width, screen_height):
+def spawn_enemies(enemies, enemy_images, missile_image, screen_width, screen_height):
     global last_enemy_spawn_time
 
     current_time = pygame.time.get_ticks()
-    print(len(enemies))
     if len(enemies) < MAX_ENEMIES and current_time - last_enemy_spawn_time >= enemy_spawn_interval:
         enemy_side = random.choice(['left', 'right'])
         if enemy_side == 'left':
@@ -48,13 +47,15 @@ def spawn_enemies(enemies, enemy_image, missile_image, screen_width, screen_heig
         # Gere um intervalo de tiro aleatório para cada inimigo
         enemy_shot_interval = random.randint(2000, 4000)
 
+        enemy_image = random.choice(enemy_images)  # Escolhe aleatoriamente uma das imagens de inimigos
         enemies.add(Enemy(enemy_image, missile_image, enemy_x, enemy_y, enemy_speed, enemy_shot_interval))
         last_enemy_spawn_time = current_time
 
     # Verifica se algum inimigo saiu da tela e remove
-    for enemy in enemies.copy():  # Faz uma cópia da lista para evitar problemas de iteração e modificação
+    for enemy in enemies.copy():
         if enemy.rect.x < 0 or enemy.rect.x > screen_width:
             enemies.remove(enemy)
+
 
 def draw_score(screen, score, screen_width):
     font = pygame.font.SysFont(None, 30)

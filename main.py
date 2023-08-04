@@ -13,10 +13,15 @@ pygame.display.set_caption("Ship War")
 
 # Carregar as imagens e criar os objetos
 background_image = pygame.image.load("resources/img/universo.jpg")
-image = pygame.image.load("resources/img/nave1.png")
+image = pygame.image.load("resources/img/player.png")
 missile_image = pygame.image.load("resources/img/tiro1.jpg")
 enemy_missile_image = pygame.image.load("resources/img/tiro2.jpg")
-enemy_image = pygame.image.load("resources/img/ship2.png")
+enemy_image = pygame.image.load("resources/img/enemyBlack1.png")
+enemy_image2 = pygame.image.load("resources/img/enemy1.png")
+enemy_image3 = pygame.image.load("resources/img/enemyred5.png")
+
+# lista as imagens que podem aparecer como inimigos
+enemy_images = [enemy_image, enemy_image2, enemy_image3]
 
 # Criar a nave
 ship = Ship(image, missile_image, SCREEN_WIDTH // 2, 4 * SCREEN_HEIGHT // 5)
@@ -76,7 +81,8 @@ while True:
         missile.move()
 
     # Adicionar naves inimigas em intervalos de tempo
-    gf.spawn_enemies(enemies, enemy_image, enemy_missile_image, SCREEN_WIDTH, SCREEN_HEIGHT)     
+    gf.spawn_enemies(enemies, enemy_images, enemy_missile_image, SCREEN_WIDTH, SCREEN_HEIGHT)
+    
 
     # Movimento das naves inimigas
     for enemy in enemies:
