@@ -34,8 +34,9 @@ enemy_missiles = pygame.sprite.Group()
 last_shot_time = 0
 shot_interval = 100
 
-# Variável para armazenar o SCORE
+# Variável para armazenar o SCORE e LIVES
 score = 0
+lives = 0
 
 # Loop principal do jogo
 while True:
@@ -63,8 +64,7 @@ while True:
         missile.move()
 
     # Adicionar naves inimigas em intervalos de tempo
-    gf.spawn_enemies(enemies, enemy_image, enemy_missile_image, SCREEN_WIDTH, SCREEN_HEIGHT)   
-    print(enemies, enemy_image, missile_image, SCREEN_WIDTH, SCREEN_HEIGHT) 
+    gf.spawn_enemies(enemies, enemy_image, enemy_missile_image, SCREEN_WIDTH, SCREEN_HEIGHT)     
 
     # Movimento das naves inimigas
     for enemy in enemies:
@@ -73,11 +73,17 @@ while True:
     # Verificar colisão entre mísseis e naves inimigas e excluir ambas em caso de colisão
     score = gf.check_collisions(missiles, enemies, score)
 
+    # Verificar colisão entre mísseis inimigos e naves do jogador e diminuir 1 do valor de LIVES
+    lives = gf.check_player_collisions(enemy_missiles, ship, lives)
+
+    # Quando o valor de lives chegar a 0 deve dar Game Over
+
     # Preencher a tela com a imagem de fundo do universo
     screen.blit(background_image, (0, 0))
 
     # Desenhar o SCORE na tela (canto superior direito)
     gf.draw_score(screen, score, SCREEN_WIDTH)
+    gf.draw_lives(screen, lives, SCREEN_WIDTH)
 
     # Desenhar todos os mísseis na tela
     missiles.draw(screen)

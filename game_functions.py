@@ -19,6 +19,14 @@ def check_collisions(missiles, enemies, score):
                 break
     return score
 
+def check_player_collisions(enemy_missiles, ship, lives):
+    for enemy_missile in enemy_missiles:
+        if enemy_missile.rect.colliderect(ship.rect):
+            enemy_missiles.remove(enemy_missile)
+            lives -= 1
+            break
+    return lives
+
 def spawn_enemies(enemies, enemy_image, missile_image, screen_width, screen_height):
     global last_enemy_spawn_time
 
@@ -39,7 +47,15 @@ def spawn_enemies(enemies, enemy_image, missile_image, screen_width, screen_heig
 def draw_score(screen, score, screen_width):
     font = pygame.font.SysFont(None, 30)
     score_text = font.render("SCORE: " + str(score), True, (255, 255, 255))
-    screen.blit(score_text, (screen_width - score_text.get_width() - 10, 10))
+    score_text_width = score_text.get_width()
+    screen.blit(score_text, (screen_width - score_text_width - 10, 10))  # Alinhado à direita com um espaço de 10 pixels
+
+def draw_lives(screen, lives, screen_width):
+    font = pygame.font.SysFont(None, 30)
+    lives_text = font.render("LIVES: " + str(lives), True, (255, 255, 255))
+    lives_text_width = lives_text.get_width()
+    screen.blit(lives_text, (10, 10))  # Alinhado à esquerda com um espaço de 10 pixels no eixo X e Y
+
 
 def enemy_fire(enemies, enemy_missiles):
     global last_enemy_shot_time, enemy_shot_interval
