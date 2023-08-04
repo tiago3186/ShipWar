@@ -2,7 +2,7 @@
 jogo de naves estilo asteroid, em desenvolvimento
 
 ### sobre
-inclui pygame  
+- usa pygame  
 
 ![readme1](https://github.com/tiago3186/ShipWar/assets/132753395/aed84225-645d-493e-824a-f4702a155118)
 
