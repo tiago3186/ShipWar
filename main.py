@@ -36,7 +36,19 @@ shot_interval = 100
 
 # Variável para armazenar o SCORE e LIVES
 score = 0
-lives = 0
+lives = 5
+
+# Armazena o estado do jogo
+game_over = False
+
+# Controla o reinicio do jogo
+game_restart_requested = False
+
+# Cria um font_large pra ser usado em estados específicos do jogo
+font_large = pygame.font.SysFont(None, 60)
+
+# Cria um font_medium pra ser usado em estados específicos do jogo
+font_medium = pygame.font.SysFont(None, 35)
 
 # Loop principal do jogo
 while True:
@@ -102,6 +114,41 @@ while True:
     for missile in enemy_missiles:
         missile.move()
 
+    # Controla o game over caso o número de vidas seja zero
+    if lives <= 0:
+        game_over = True
 
-    # Atualizar a tela
-    pygame.display.flip()
+    if game_over:
+        while game_over:  # Loop para manter o jogo pausado após o game over
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:  # Verifica se a tecla ENTER foi pressionada
+                        # Reiniciar o jogo
+                        game_restart_requested = True
+                        game_over = False
+                    
+            game_over_text = font_large.render("Game Over", True, (255, 0, 0))    
+            press_enter_to_restart_text = font_medium.render("Press Enter to Restart", True, (255, 255, 255))       
+            screen.blit(press_enter_to_restart_text, (SCREEN_WIDTH // 2 - game_over_text.get_width() // 2, SCREEN_HEIGHT // 2 - 50))
+            screen.blit(game_over_text, (SCREEN_WIDTH // 2 - game_over_text.get_width() // 2, SCREEN_HEIGHT // 3))
+
+            # Atualizar a tela
+            pygame.display.flip()
+                
+    if game_restart_requested:
+            # Reiniciar o jogo aqui
+            score = 0
+            lives = 5
+            ship = Ship(image, missile_image, SCREEN_WIDTH // 2, 4 * SCREEN_HEIGHT // 5)
+            missiles.empty()
+            enemies.empty()
+            enemy_missiles.empty()
+            last_shot_time = 0
+            game_restart_requested = False  # Reinício do jogo concluído
+
+    else:
+            # Atualizar a tela
+            pygame.display.flip()
