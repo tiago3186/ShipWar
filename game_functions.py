@@ -3,6 +3,8 @@ import pygame
 import random
 from game_objects import Enemy
 
+MAX_ENEMIES = 20 # Define o maximo de objetos enemies que pode existir na tela
+
 enemy_spawn_interval = 200  # Intervalo de tempo entre cada spawn de inimigo (em milissegundos)
 last_enemy_spawn_time = 0    # Tempo do último spawn de inimigo
 
@@ -15,6 +17,7 @@ def check_collisions(missiles, enemies, score):
             if missile.rect.colliderect(enemy.rect):
                 missiles.remove(missile)
                 enemies.remove(enemy)
+                print(len(enemies))
                 score += 100
                 break
     return score
@@ -31,7 +34,8 @@ def spawn_enemies(enemies, enemy_image, missile_image, screen_width, screen_heig
     global last_enemy_spawn_time
 
     current_time = pygame.time.get_ticks()
-    if current_time - last_enemy_spawn_time >= enemy_spawn_interval:
+    print(len(enemies))
+    if len(enemies) < MAX_ENEMIES and current_time - last_enemy_spawn_time >= enemy_spawn_interval:
         enemy_side = random.choice(['left', 'right'])
         if enemy_side == 'left':
             enemy_x = 0
@@ -42,7 +46,11 @@ def spawn_enemies(enemies, enemy_image, missile_image, screen_width, screen_heig
         enemy_y = random.randint(screen_height // 6, screen_height // 1.5)        
         enemies.add(Enemy(enemy_image, missile_image, enemy_x, enemy_y, enemy_speed))
         last_enemy_spawn_time = current_time
-
+        
+    # Verifica se algum inimigo saiu da tela e remove
+    for enemy in enemies.copy():  # Faz uma cópia da lista para evitar problemas de iteração e modificação
+        if enemy.rect.x < 0 or enemy.rect.x > screen_width:
+            enemies.remove(enemy)
 
 def draw_score(screen, score, screen_width):
     font = pygame.font.SysFont(None, 30)
@@ -55,7 +63,6 @@ def draw_lives(screen, lives, screen_width):
     lives_text = font.render("LIVES: " + str(lives), True, (255, 255, 255))
     lives_text_width = lives_text.get_width()
     screen.blit(lives_text, (10, 10))  # Alinhado à esquerda com um espaço de 10 pixels no eixo X e Y
-
 
 def enemy_fire(enemies, enemy_missiles):
     global last_enemy_shot_time, enemy_shot_interval
