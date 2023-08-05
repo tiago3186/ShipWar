@@ -22,11 +22,16 @@
 
 ### Como Jogar
 
+![image](https://github.com/tiago3186/ShipWar/assets/132753395/05196a85-f8f3-4711-9a2e-c9a4e9b66506)
+
+- No Menu Principal clique em Novo Jogo (ou navegue no menu pelo teclado e aperte Enter)
+
+
 - Use as teclas de seta para mover a nave (esquerda, direita, cima, baixo).
 - Pressione a barra de espaço para disparar mísseis em direção aos inimigos.
 - Destrua os inimigos para ganhar pontos.
 - Evite os mísseis inimigos para preservar suas vidas.
-- O jogo termina quando você perde todas as vidas.
+- O jogo termina quando você perde todas as vidas, daí aperte Enter pra reinciiar.
 
 ### Executando o Jogo
 
