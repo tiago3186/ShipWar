@@ -42,12 +42,17 @@ def spawn_enemies(enemies, enemy_images, missile_image, screen_width, screen_hei
         else:
             enemy_x = screen_width
             enemy_speed = -random.uniform(0.5, 1)
-        enemy_y = random.randint(screen_height // 6, screen_height // 1.5)       
-
+        
+        enemy_y = random.randint(screen_height // 6, screen_height // 1.5)
+        enemy_image = random.choice(enemy_images)
+        
+        # Verifica o índice da imagem selecionada e ajusta a velocidade se for o índice 1 (enemy_image2)
+        if enemy_image == enemy_images[1]:
+            enemy_speed *= 2.0
+        
         # Gere um intervalo de tiro aleatório para cada inimigo
         enemy_shot_interval = random.randint(2000, 4000)
 
-        enemy_image = random.choice(enemy_images)  # Escolhe aleatoriamente uma das imagens de inimigos
         enemies.add(Enemy(enemy_image, missile_image, enemy_x, enemy_y, enemy_speed, enemy_shot_interval))
         last_enemy_spawn_time = current_time
 
