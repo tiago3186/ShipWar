@@ -18,7 +18,7 @@
 
 1. Certifique-se de ter o Python instalado em sua máquina.
 2. Clone ou faça o download deste repositório.
-3. Instale a biblioteca Pygame
+3. Instale a biblioteca pygame e pygame_menu
 
 ### Como Jogar
 
