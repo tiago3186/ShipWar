@@ -11,15 +11,20 @@ last_enemy_spawn_time = 0    # Tempo do último spawn de inimigo
 enemy_shot_interval = 3000  # Intervalo de tempo entre cada tiro inimigo (em milissegundos)
 last_enemy_shot_time = 0    # Tempo do último tiro inimigo
 
-def check_collisions(missiles, enemies, score):
+previous_enemy_images = [] # lista gambiarra para controlar o retorno de spawm pra nunca ser vazio
+
+def check_collisions(missiles, enemies, score, enemy_images, current_enemy_image):
     for missile in missiles:
         for enemy in enemies:
             if missile.rect.colliderect(enemy.rect):
                 missiles.remove(missile)
-                enemies.remove(enemy)
-                print(len(enemies))
-                score += 100
-                break
+                if current_enemy_image == enemy_images[1]:  # Verifica se o inimigo é do tipo enemy_image2
+                    score += 155
+                    enemies.remove(enemy)
+                else:
+                    score += 100
+                    enemies.remove(enemy)
+                break             
     return score
 
 def check_player_collisions(enemy_missiles, ship, lives):
@@ -31,9 +36,13 @@ def check_player_collisions(enemy_missiles, ship, lives):
     return lives
 
 def spawn_enemies(enemies, enemy_images, missile_image, screen_width, screen_height):
-    global last_enemy_spawn_time
-
+    global last_enemy_spawn_time, enemy_image_received
+    
     current_time = pygame.time.get_ticks()
+    
+    # Defina um valor padrão para enemy_image_received
+    enemy_image_received = None
+    
     if len(enemies) < MAX_ENEMIES and current_time - last_enemy_spawn_time >= enemy_spawn_interval:
         enemy_side = random.choice(['left', 'right'])
         if enemy_side == 'left':
@@ -46,20 +55,30 @@ def spawn_enemies(enemies, enemy_images, missile_image, screen_width, screen_hei
         enemy_y = random.randint(screen_height // 6, screen_height // 1.5)
         enemy_image = random.choice(enemy_images)
         
-        # Verifica o índice da imagem selecionada e ajusta a velocidade se for o índice 1 (enemy_image2)
         if enemy_image == enemy_images[1]:
             enemy_speed *= 2.0
         
-        # Gere um intervalo de tiro aleatório para cada inimigo
         enemy_shot_interval = random.randint(2000, 4000)
 
         enemies.add(Enemy(enemy_image, missile_image, enemy_x, enemy_y, enemy_speed, enemy_shot_interval))
         last_enemy_spawn_time = current_time
 
-    # Verifica se algum inimigo saiu da tela e remove
+        # Atualize enemy_image_received com o valor de enemy_image
+        enemy_image_received = enemy_image
+
+        # Adicione o valor de enemy_image_received à lista de valores anteriores
+        previous_enemy_images.append(enemy_image_received)
+
     for enemy in enemies.copy():
         if enemy.rect.x < 0 or enemy.rect.x > screen_width:
             enemies.remove(enemy)
+
+  # Verifique se enemy_image_received é None
+    if enemy_image_received is None and previous_enemy_images:
+        # Retorne o último valor não-Nenhum da lista de valores anteriores
+        return previous_enemy_images[-1]
+        
+    return enemy_image_received  # Retorne o valor atualizado
 
 
 def draw_score(screen, score, screen_width):

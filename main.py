@@ -46,6 +46,9 @@ lives = 5
 # Armazena o estado do jogo
 game_over = False
 
+# Armazena qual a imagem do inimigo
+current_enemy_image = None
+
 # Controla o reinicio do jogo
 game_restart_requested = False
 
@@ -78,11 +81,12 @@ while True:
 
     # Movimento de todos os mísseis
     for missile in missiles:
-        missile.move()
+        missile.move()    
 
-    # Adicionar naves inimigas em intervalos de tempo
-    gf.spawn_enemies(enemies, enemy_images, enemy_missile_image, SCREEN_WIDTH, SCREEN_HEIGHT)
-    
+     # chama a função que gera os inimigos captura a current_enemy_image para usar em casos onde o inimigo tem comportamentos diferentes
+    enemy_returned = gf.spawn_enemies(enemies, enemy_images, enemy_missile_image, SCREEN_WIDTH, SCREEN_HEIGHT)    
+    current_enemy_image = enemy_returned
+    print(current_enemy_image)
 
     # Movimento das naves inimigas
     for enemy in enemies:
@@ -97,7 +101,7 @@ while True:
                 enemy.last_shot_time = current_time  # Atualiza o tempo do último tiro
 
     # Verificar colisão entre mísseis e naves inimigas e excluir ambas em caso de colisão
-    score = gf.check_collisions(missiles, enemies, score)
+    score = gf.check_collisions(missiles, enemies, score, enemy_images, current_enemy_image)
 
     # Verificar colisão entre mísseis inimigos e naves do jogador e diminuir 1 do valor de LIVES
     lives = gf.check_player_collisions(enemy_missiles, ship, lives)
