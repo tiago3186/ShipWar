@@ -52,7 +52,7 @@ def spawn_enemies(enemies, enemy_images, missile_image, screen_width, screen_hei
             enemy_x = screen_width
             enemy_speed = -random.uniform(0.5, 1)
         
-        enemy_y = random.randint(screen_height // 6, screen_height // 1.5)
+        enemy_y = random.randint(screen_height // 6, int(screen_height // 1.5))
         enemy_image = random.choice(enemy_images)
         
         if enemy_image == enemy_images[1]:
